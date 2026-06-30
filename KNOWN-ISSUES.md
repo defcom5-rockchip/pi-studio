@@ -42,8 +42,7 @@ ceiling, not a decode or browser bug.
 **Severity:** low · **Status:** fixed via launcher flag.
 
 Use **Chromium** (the rkmpp build) for hardware video decode and clean rendering — it's the designated
-primary browser. **Vivaldi** runs under XWayland on this board's immature GPU stack and software-
-decodes video, so it's launched with `--disable-gpu` for a clean software render.
+primary browser. **Vivaldi** runs under XWayland on this board's immature GPU stack and software-decodes video, so it's launched with `--disable-gpu` for a clean software render.
 
 ---
 
@@ -53,8 +52,7 @@ decodes video, so it's launched with `--disable-gpu` for a clean software render
 DRM video plays at **720p maximum** — the Widevine **L3** ceiling that applies to *all* arm64 Linux
 browsers, not a Pi Studio limit (1080p/L1 needs hardware key paths unavailable here). Pi Studio ships
 an on-desktop **Widevine setup guide**; once enabled, DRM services play in Chromium (Prime Video,
-Disney+, Spotify, DRM YouTube). Protected streams are software-
-decoded (normal on Linux) and play smoothly at 720p.
+Disney+, Spotify, DRM YouTube). Protected streams are software-decoded (normal on Linux) and play smoothly at 720p.
 
 ---
 *New verified-on-hardware limitations get added here. Honesty > hiding.*
