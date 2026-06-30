@@ -52,8 +52,8 @@ decodes video, so it's launched with `--disable-gpu` for a clean software render
 
 DRM video plays at **720p maximum** — the Widevine **L3** ceiling that applies to *all* arm64 Linux
 browsers, not a Pi Studio limit (1080p/L1 needs hardware key paths unavailable here). Pi Studio ships
-a **Streaming** launcher tuned for DRM playback, plus an optional Widevine installer that enables DRM
-services in Chromium (Prime Video, Disney+, Spotify, DRM YouTube). Protected streams are software-
+an on-desktop **Widevine setup guide**; once enabled, DRM services play in Chromium (Prime Video,
+Disney+, Spotify, DRM YouTube). Protected streams are software-
 decoded (normal on Linux) and play smoothly at 720p.
 
 ---

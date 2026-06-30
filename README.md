@@ -24,8 +24,8 @@ desktop built for making sound — not phoning home. Based on Ubuntu 24.04 (Nobl
 - 🔌 **Class-compliant USB audio** interfaces work out of the box (no autosuspend dropouts).
 - 🔒 **Offline & private** — no telemetry, no phone-home, **snap-free**, works with no internet.
 - 🎧 **WiiM control** built in.
-- 📺 **DRM streaming video at 720p** — a tuned **Streaming** launcher, plus an included Widevine
-  installer for Prime Video, Disney+, Spotify, and DRM YouTube.
+- 📺 **DRM streaming video at 720p** — Chromium plays Prime Video, Disney+, Spotify, and DRM YouTube;
+  enable Widevine with the guide that ships on the desktop.
 
 ## What you'll hear
 - **Tighter feel.** Less delay between hitting a key and the sound — monitoring and live coding feel
@@ -57,10 +57,10 @@ The image ships in two parts (GitHub caps release files at 2 GB each).
 4. Boot — you're in a tuned studio. First-boot tips land on the desktop.
 
 ## Streaming / DRM
-Pi Studio includes a **Streaming** launcher — a Chromium profile tuned for DRM video — that plays at
-**720p** (the Widevine **L3** ceiling on Linux, not a Pi Studio limit). An optional Widevine installer
-enables DRM playback in Chromium for services like **Amazon Prime Video, Disney+, Spotify, and DRM
-YouTube**.
+Chromium plays DRM streaming video at **720p** — the Widevine **L3** ceiling on Linux, not a Pi Studio
+limit. Enable Widevine using the **guide that ships on the desktop**; then **Amazon Prime Video,
+Disney+, Spotify, and DRM YouTube** play. Protected streams are software-decoded (normal on Linux) and
+play smoothly at 720p.
 
 ## ⚠️ Known issues — read them, we don't hide them
 We ship an honest **[KNOWN-ISSUES](KNOWN-ISSUES.md)** register. The short version:
