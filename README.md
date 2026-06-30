@@ -8,8 +8,9 @@ Free, open, fully offline, and privacy-first. Flagship: **Sonic Pi** live-coding
 ---
 
 ## What it is
-Pi Studio turns a ~$80 Orange Pi 5B into a real music-production machine: a kernel **re-tuned for
-real-time audio**, a curated stack of open-source music tools, hardware-accelerated 4K video, and a
+Pi Studio is a music-production OS for the Orange Pi 5B (Rockchip RK3588). Put a board, NVMe, case,
+and PSU together for around $250, flash this image, and you've got a real studio: a kernel **re-tuned
+for real-time audio**, a curated stack of open-source music tools, hardware-accelerated 4K video, and a
 desktop built for making sound — not phoning home. Based on Ubuntu 24.04 (Noble), arm64.
 
 ## Highlights
