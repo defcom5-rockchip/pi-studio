@@ -73,7 +73,7 @@ We ship an honest **[KNOWN-ISSUES](KNOWN-ISSUES.md)** register. The short versio
 - Kernel 4K@120 patch — **jamautt**
 - Bluetooth UI safety fix — **sandi-pi**
 - Base image — **Joshua-Riek / ubuntu-rockchip**
-- Widevine (arm64) — **AsahiLinux widevine-installer**
+- Widevine enabler — **AsahiLinux widevine-installer** (user-installed; not bundled — Widevine is Google-proprietary)
 - And the upstream projects: Sonic Pi, Ardour, PipeWire, Surge XT, and the RK3588 community.
 
 ## License
