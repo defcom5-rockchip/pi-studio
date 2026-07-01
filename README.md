@@ -24,7 +24,8 @@ sound — not phoning home. Based on Ubuntu 24.04 (Noble), arm64.
   Calf plugins, VMPK, qpwgraph, and more, on PipeWire with realtime priority.
 - 🔌 **Class-compliant USB audio** interfaces work out of the box (no autosuspend dropouts).
 - 🔒 **Offline & private** — no telemetry, no phone-home, **snap-free**, works with no internet.
-- 🎧 **WiiM control** built in.
+- 🎧 **WiiM control, built in** — drive your WiiM streamer from the desktop, out of the box. Rare in a
+  Linux distro; standard here.
 - 📺 **DRM streaming video at 720p** — Chromium plays Prime Video, Disney+, Spotify, and DRM YouTube;
   enable Widevine with the guide that ships on the desktop.
 
