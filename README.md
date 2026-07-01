@@ -17,8 +17,8 @@ sound — not phoning home. Based on Ubuntu 24.04 (Noble), arm64.
 - 🎚️ **Verified low-latency kernel — hit a key, hear it *now*.** Full preemption + 1000 Hz tick.
   Measured on hardware: **~115 µs worst-case scheduling latency under full 8-core load, 0 xruns at a
   1.33 ms buffer** (~82× lower worst-case jitter than a stock desktop kernel — same chip, config alone).
-- 🎵 **Sonic Pi 5.0** — the latest upstream beta — front and center, with a custom *PiStudioMode* theme,
-  game-controller input, and MIDI-clock master/slave so it drives (or follows) your gear.
+- 🎵 **Sonic Pi 5.0.0-beta4** — the newest upstream release — front and center, with a custom *PiStudioMode*
+  theme, game-controller input, and MIDI-clock master/slave so it drives (or follows) your gear.
 - 🖥️ **4K@120** display (custom-patched VOP2 kernel) + **hardware video decode** in Chromium (RK3588 rkmpp).
 - 🎹 **A full open-source studio** — Ardour, Hydrogen, Rosegarden, Surge XT, Yoshimi, amsynth, qsynth,
   Calf plugins, VMPK, qpwgraph, and more, on PipeWire with realtime priority.
