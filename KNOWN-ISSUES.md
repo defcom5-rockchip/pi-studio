@@ -77,18 +77,24 @@ Full analysis: `pi-studio-bluetooth-serdev-fix.md`. Memory: [[bluetooth-ap6275p]
 
 ---
 
-## BT-2 — Bluetooth may fail to start at boot when WiFi is active (AP6275P combo-chip race)
-**Status:** Root-caused + **A/B-confirmed**; **fix queued for the next build**. Workaround available. Not a chip defect.
-**Severity:** Low–medium — when Bluetooth comes up it works fully; only the *boot-time bring-up* is affected, and only when WiFi is active during boot.
-**Verified:** 2026-07-15 on the test Pi (AP6275P / BCM4362A2) by a clean A/B — WiFi **off** at boot → BT alive (real MAC, UP RUNNING); WiFi **active** at boot → BT dead. Same box, same build, WiFi the only variable.
+## BT-2 — ✅ FIXED: Bluetooth failed to start at boot when WiFi was active (AP6275P combo-chip race)
+**Status:** **FIXED** — root-caused, A/B-confirmed 4/4, **first-boot validated 2026-07-17** (WiFi live during BT bring-up → real MAC, `UP RUNNING`, zero `-49`). The fix ships in **builds after v1.2**; the public record is
+[ubuntu-rockchip issue #1](https://github.com/defcom5-rockchip/ubuntu-rockchip/issues/1) + fix commit `814a50f`.
 
-**Symptom (user-facing):** On some boots Bluetooth won't turn on at all — the adapter is listed but won't enable — and toggling WiFi off *afterward* does not recover it.
+**What it was:** WiFi and Bluetooth share one physical chip (AP6275P / BCM4362A2). The stock bring-up script ran `rfkill unblock all` — waking WiFi *during* the BT firmware load — and fired patchram with no verify/retry. When WiFi won the race, `hci0` came up DOWN with a null MAC (`Opcode 0x1003 failed: -49`), Bluetooth greyed out, and only a lucky reboot recovered it.
 
-**Cause (root, confirmed):** WiFi and Bluetooth are the **same physical chip** (AP6275P / BCM4362A2 combo). When WiFi initialises that chip at boot, it races and breaks the Bluetooth firmware load — `hci0` comes up with a null address `00:00:00:00:00:00`, DOWN (`dmesg: hci0: Opcode 0x1003 failed: -49`). Once the load has failed, **only a reboot** re-attempts it; turning WiFi off after the fact can't reload it. NetworkManager auto-connects WiFi at boot even with an Ethernet cable plugged in — there's no default "wired disables wireless" — which is what usually triggers it.
+**The fix (in `ap6275p-bluetooth.sh`):** `rfkill unblock bluetooth` — BT only, don't wake WiFi mid-load *(the actual fix)* — plus verify-the-MAC + one boot-time patchram retry as insurance.
 
-**Workaround for users:** If Bluetooth won't come on, on a **wired** connection **turn WiFi off, then reboot** — Bluetooth comes up clean and stays up boot-to-boot as long as WiFi isn't active during boot.
+**If you're on the v1.2 image (which predates the fix):** the old workaround still applies — on a wired connection, turn WiFi off and reboot; BT then comes up clean every boot. Or update the script by hand from the fix commit.
 
-**Fix path (next build):** order the Bluetooth firmware bring-up (patchram) to finish **before** the WiFi driver initialises the chip — or auto-disable WiFi when a wired link is present — so Bluetooth always wins the boot race and users never see this.
+## BT-3 — Bluetooth *audio* limitations: WiFi coexistence + SBC codec (documented, not fixed)
+**Status:** Known limits of the AP6275P radio + SBC; **by design we don't chase these** — the clean path is wired. Severity: low (BT audio remains usable; quality-critical listening should be wired anyway).
+
+**BT audio to a speaker (e.g. a WiiM) can click/pop/stutter — two causes, both Bluetooth-only:**
+1. **WiFi/BT coexistence** — the AP6275P shares one 2.4 GHz radio for WiFi *and* Bluetooth. **Turning WiFi on (even just scanning, not connected) wrecks BT A2DP audio.** Proven by a clean A-B-A: WiFi off = smooth tone, WiFi on = clicks/stutter, WiFi off = smooth again. **→ Use Ethernet and keep WiFi off for clean BT audio.**
+2. **SBC codec on transients** — percussive/broadband material (drums) can click over BT even with WiFi off; sustained tones are fine. Inherent to lossy SBC on this chip. (An `sbc-xq` override was tested and is *not* a fix.)
+
+**The clean path for bit-perfect audio to a WiiM is Ethernet, not Bluetooth** (see the hi-res how-to). For live Sonic Pi output destined for the speaker, render to a file and play it over Ethernet. *The audio engine itself is clean — the same material plays glass-smooth wired; every click above was the Bluetooth link.*
 
 ## DISP-1 — Windowed flicker / tearing at 4K@120
 **Status:** Known limit (VOP2). **Workaround available.** Severity: low.
