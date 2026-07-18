@@ -43,6 +43,9 @@ timing you'll definitely hear.
 - **Orange Pi 5B** (Rockchip RK3588, 8-core, Mali-G610, arm64) — the primary target.
 - The audio + kernel work applies to other RK3588 boards too; the 5B is what's tested and tuned.
 
+### Moving to eMMC
+Running from SD? [docs/install-to-emmc.md](docs/install-to-emmc.md) — one command clones your set-up system onto the onboard eMMC.
+
 ## Download & flash
 The image ships in two parts (GitHub caps release files at 2 GB each).
 1. From **[Releases](../../releases)**, download **both** parts + the checksum:
