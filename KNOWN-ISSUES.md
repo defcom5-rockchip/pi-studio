@@ -87,14 +87,25 @@ Full analysis: `pi-studio-bluetooth-serdev-fix.md`. Memory: [[bluetooth-ap6275p]
 
 **If you're on the v1.2 image (which predates the fix):** the old workaround still applies — on a wired connection, turn WiFi off and reboot; BT then comes up clean every boot. Or update the script by hand from the fix commit.
 
-## BT-3 — Bluetooth *audio* limitations: WiFi coexistence + SBC codec (documented, not fixed)
-**Status:** Known limits of the AP6275P radio + SBC; **by design we don't chase these** — the clean path is wired. Severity: low (BT audio remains usable; quality-critical listening should be wired anyway).
+## BT-3 — ✅ MITIGATED IN PI STUDIO: WiFi-induced Bluetooth-audio stutter (coex firmware tuning)
+**Status:** **Mitigated — Pi Studio ships tuned BT-coexistence firmware timing params** (`btc_params8/1/50` in the AP6275P nvram). To our knowledge no other distro ships this — the same combo-chip stutter has sat open on Raspberry Pi's tracker since **2016** ([raspberrypi/linux#1402](https://github.com/raspberrypi/linux/issues/1402)).
 
-**BT audio to a speaker (e.g. a WiiM) can click/pop/stutter — two causes, both Bluetooth-only:**
-1. **WiFi/BT coexistence** — the AP6275P shares one 2.4 GHz radio for WiFi *and* Bluetooth. **Turning WiFi on (even just scanning, not connected) wrecks BT A2DP audio.** Proven by a clean A-B-A: WiFi off = smooth tone, WiFi on = clicks/stutter, WiFi off = smooth again. **→ Use Ethernet and keep WiFi off for clean BT audio.**
-2. **SBC codec on transients** — percussive/broadband material (drums) can click over BT even with WiFi off; sustained tones are fine. Inherent to lossy SBC on this chip. (An `sbc-xq` override was tested and is *not* a fix.)
+**The problem:** WiFi and Bluetooth share the AP6275P's radio. On stock firmware settings, active WiFi (even just scanning) stutters BT A2DP audio. Notably, stock nvram already ships `btc_mode=1` (TDM arbitration) *and still stutters* — the win is in the **timing** parameters, not the mode.
 
-**The clean path for bit-perfect audio to a WiiM is Ethernet, not Bluetooth** (see the hi-res how-to). For live Sonic Pi output destined for the speaker, render to a file and play it over Ethernet. *The audio engine itself is clean — the same material plays glass-smooth wired; every click above was the Bluetooth link.*
+**Ear-validated results (same box, same day, WiiM over BT; 14 h overnight soak clean):**
+| condition | stock | + Pi Studio params |
+|---|---|---|
+| WiFi scanning during playback | **stutter** | **smooth** |
+| WiFi connected + 38 MB download | — | **smooth** |
+| download + drum transients (SBC worst case) | — | **good** |
+
+**Residual limits (honest list):**
+1. **SBC on marginal links** — heavy percussive material can still click over Bluetooth; that's the lossy codec, not coexistence.
+2. **A broken WiFi profile can still stutter BT:** a saved network with a wrong/missing password makes NetworkManager retry scan/associate in a loop — the harshest possible radio state. If BT audio stutters, **check WiFi isn't stuck retrying a bad password** (`nmcli connection modify <ssid> wifi-sec.psk <password>`).
+3. TDM gives Bluetooth bigger radio slots, so WiFi throughput dips while BT audio streams (~15 Mbit/s sustained observed — fine for streaming).
+4. Don't force 5 GHz-only via `nmcli band a` — the vendor WiFi driver can't hold a band-pinned association. Dual-band APs steer to 5 GHz on their own, which further helps.
+
+**Bit-perfect path to a WiiM remains Ethernet** (see the hi-res how-to) — that's true of any Bluetooth on any platform. *The audio engine itself is clean: identical material plays glass-smooth wired.*
 
 ## DISP-1 — Windowed flicker / tearing at 4K@120
 **Status:** Known limit (VOP2). **Workaround available.** Severity: low.
