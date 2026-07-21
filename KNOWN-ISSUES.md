@@ -33,8 +33,11 @@ Pi Studio migrates and the cherry-pick era ends. Until then: hand-picked backpor
 ---
 
 ## BT-1 — Turning Bluetooth OFF disables it until reboot (low-latency-kernel side-effect)
-**Status:** Root-caused + **mitigated**; full fix on the post-launch list. **Not a chip defect, not
-universal** — a side-effect of Pi Studio's low-latency kernel.
+**Status:** **SELF-HEALING in builds after v1.3** (bt-sentinel v3.6 ships in both Pi Studio and Pi
+Desktop images baked from 2026-07-21 on): toggling Bluetooth off is safe; toggling back on
+self-heals in ~10–15 s with a desktop notification (the chip reloads its firmware). Reboots and
+power-cycles were always safe. **On v1.3 and earlier:** the old rule below still applies. Not a chip
+defect, not universal — a side-effect of the low-latency kernel's timing.
 **Severity:** Low–medium — Bluetooth works fully; only the *off→on* toggle is affected, and the most
 common way to trip it (an accidental mis-tap) is mitigated in the UI.
 **Verified:** 2026-06-28/29 on the test Pi (AP6275P / BCM4362A2), root-caused by a kernel-config diff.
@@ -51,8 +54,9 @@ build and the Pi Studio build shows the **only** difference is the low-latency s
 (`CONFIG_PREEMPT` full vs `VOLUNTARY`, `HZ=1000` vs `300`). So this is a Pi-Studio-specific tradeoff,
 **not** a universal AP6275P/RK3588 bug — every stock-kernel board with this chip recovers normally.
 
-**Rule for users:** *Once Bluetooth is on, leave the adapter ON.* Pair / connect freely — just don't
-flip the master switch (or Airplane Mode) off. If it does go off → reboot.
+**Rule for v1.3-and-earlier users:** *Once Bluetooth is on, leave the adapter ON* — if it goes off,
+reboot. **From the next release:** flip it freely; the sentinel revives the chip in seconds and tells
+you when it's done.
 
 **Mitigation SHIPPED ("Sandi's fix"):** the #1 way to trip this is an accidental mis-tap — the on/off
 button sits right next to the device-select arrow. The ArmedOrange shell theme adds a **gap** between
