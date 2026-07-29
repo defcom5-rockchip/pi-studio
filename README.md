@@ -69,8 +69,13 @@ play smoothly at 720p.
 
 ## ⚠️ Known issues — read them, we don't hide them
 We ship an honest **[KNOWN-ISSUES](KNOWN-ISSUES.md)** register. The short version:
-- **Bluetooth:** works great — just leave the adapter **on**; toggling it off needs a reboot to recover
-  (low-latency-kernel + chip-firmware quirk; mitigated in the UI).
+- **Bluetooth:** the AP6275P radio's long-standing bugs are **root-caused and fixed here** — the
+  boot race (Wi-Fi init starving the BT firmware load) and the Wi-Fi/BT **coexistence stutter**
+  (the Cypress `btc_params` tuning Raspberry Pi has shipped for years, which never reached
+  Rockchip's nvram files). The old "toggle it off and reboot" wedge is now **self-healing**: a
+  watchdog revives the adapter automatically in ~10–15 s, no reboot. Details: issues
+  [#1](https://github.com/defcom5-rockchip/ubuntu-rockchip/issues/1) and
+  [#2](https://github.com/defcom5-rockchip/ubuntu-rockchip/issues/2).
 - **4K@120:** flawless full-screen; for everyday windowed use run **4K@60** (no flicker).
 - **DRM video:** 720p maximum (Widevine L3 cap, Linux-wide).
 
