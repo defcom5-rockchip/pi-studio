@@ -19,7 +19,9 @@ sound — not phoning home. Based on Ubuntu 24.04 (Noble), arm64.
   1.33 ms buffer** (~82× lower worst-case jitter than a stock desktop kernel — same chip, config alone).
 - 🎵 **Sonic Pi 5.0.0-beta4** — the newest upstream release — front and center, with a custom *PiStudioMode*
   theme, game-controller input, and MIDI-clock master/slave so it drives (or follows) your gear.
-- 🖥️ **4K@120** display (custom-patched VOP2 kernel) + **hardware video decode** in Chromium (RK3588 rkmpp).
+- 🖥️ **4K@120** display (custom-patched VOP2 kernel) — **validated on hardware**, visually clean.
+  **Hardware video decode in media players** (mpv/VLC via rkmpp); ⚠️ *browser* video is software-decoded —
+  a GL-driver limit on this SoC, see [KNOWN-ISSUES](KNOWN-ISSUES.md).
 - 🎹 **A full open-source studio** — Ardour, Hydrogen, Rosegarden, Surge XT, Yoshimi, amsynth, qsynth,
   Calf plugins, VMPK, qpwgraph, and more, on PipeWire with realtime priority.
 - 🔌 **Class-compliant USB audio** interfaces work out of the box (no autosuspend dropouts).
@@ -81,7 +83,9 @@ We ship an honest **[KNOWN-ISSUES](KNOWN-ISSUES.md)** register. The short versio
   watchdog revives the adapter automatically in ~10–15 s, no reboot. Details: issues
   [#1](https://github.com/defcom5-rockchip/ubuntu-rockchip/issues/1) and
   [#2](https://github.com/defcom5-rockchip/ubuntu-rockchip/issues/2).
-- **4K@120:** flawless full-screen; for everyday windowed use run **4K@60** (no flicker).
+- **4K@120:** validated on hardware — a full session at 120 Hz with no visible display issue.
+  (A Chromium-specific compositing glitch can appear on *some* ultrawide modes when resizing a
+  window; F11 fullscreen is always clean. Not a 4K@120 problem — see below.)
 - **DRM video:** 720p maximum (Widevine L3 cap, Linux-wide).
 
 ## Credits
