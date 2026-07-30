@@ -32,6 +32,38 @@ Pi Studio migrates and the cherry-pick era ends. Until then: hand-picked backpor
 
 ---
 
+## VID-1 — Browser video is software-decoded (hardware decode unavailable in Chromium)
+
+**Status:** **CONFIRMED, upstream limitation, no fix available on this kernel.** Media players are
+unaffected.
+**Severity:** Medium — video *plays*, but 4K in a browser burns several CPU cores instead of the VPU.
+**Measured:** 2026-07-30, Pi Studio v1.4 on eMMC, 4K VP9 in Chromium — **~477% CPU (≈5 cores)** and
+**5.4% dropped frames** (789/14495). `chrome://gpu` reports video decode **disabled**, on a session
+where GPU compositing is working normally.
+
+**Why.** The hardware decoder outputs frames in **NV12**. To display them, Chromium must import that
+buffer into GL. The open-source GL stack we ship (panfork Mesa / Panfrost, Mesa 23.0.0-devel) reports
+`YUV_420_BIPLANAR: not supported` and cannot allocate NV12 through GBM — so Chromium cannot complete
+the decode→display path and disables hardware decode outright rather than half-enable it. This is a
+known upstream gap (Chromium issue 372630272), not a configuration error and not something a flag
+fixes. We tested the vendor Mali blob as an alternative GL path: Chromium 132 fell back to software
+rendering with it, which is worse.
+
+**Fixed upstream, but not for us yet:** RK3588 + the mainline **Panthor** driver + **Mesa 26** on a
+**mainline kernel** reportedly does this correctly. We can't move there while mainline still lacks
+4K@120 (FRL), the NPU stack Muse depends on, and full audio support. Tracked; we'll revisit.
+
+**What to do meanwhile**
+- **Local/large video: use mpv or VLC** — they talk to the VPU through rkmpp directly, with no GL
+  import in the way.
+- **YouTube:** the `h264ify` browser extension makes YouTube serve H.264, which the hardware decoder
+  *does* attempt (imperfectly). Worth trying if browser video matters to you.
+- If your board is on a marginal power supply, note that sustained software decode is a real load —
+  see the power guidance in [EMMC-INSTALL.md](EMMC-INSTALL.md).
+
+**Not affected:** 4K@120 display output, GPU compositing, desktop performance, audio, and hardware
+decode in media players.
+
 ## BT-1 — Turning Bluetooth OFF disables it until reboot (low-latency-kernel side-effect)
 **Status:** **SELF-HEALING in builds after v1.3** (bt-sentinel v3.6 ships in both Pi Studio and Pi
 Desktop images baked from 2026-07-21 on): toggling Bluetooth off is safe; toggling back on
