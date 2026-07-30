@@ -47,17 +47,22 @@ timing you'll definitely hear.
 Running from SD? [docs/install-to-emmc.md](docs/install-to-emmc.md) — one command clones your set-up system onto the onboard eMMC.
 
 ## Download & flash
-The image ships in two parts (GitHub caps release files at 2 GB each).
+The image ships in three parts (GitHub caps release files at 2 GB each).
+
+> **Installing to eMMC? Read [EMMC-INSTALL.md](EMMC-INSTALL.md) first.** Copying a root filesystem
+> onto eMMC does *not* install a bootloader — you can end up running a new OS on years-old firmware,
+> which causes crashes and reboots under load (and follows you across distros).
+
 1. From **[Releases](../../releases)**, download **both** parts + the checksum:
-   `…img.xz.part00`, `…img.xz.part01`, `…img.xz.sha256`.
+   `…img.xz.part00`, `…img.xz.part01`, `…img.xz.part02`, `…img.xz.sha256`.
 2. Rejoin and verify:
    ```bash
-   cat pi-studio-v1.1-orangepi-5b.img.xz.part* > pi-studio-v1.1-orangepi-5b.img.xz
-   sha256sum -c pi-studio-v1.1-orangepi-5b.img.xz.sha256   # must print: OK
+   cat pi-studio-v1.4-orangepi-5b.img.xz.part* > pi-studio-v1.4-orangepi-5b.img.xz
+   sha256sum -c pi-studio-v1.4-orangepi-5b.img.xz.sha256   # must print: OK
    ```
 3. Flash with [balenaEtcher](https://etcher.balena.io/) (on the rejoined `.img.xz`), or:
    ```bash
-   xz -dc pi-studio-v1.1-orangepi-5b.img.xz | sudo dd of=/dev/sdX bs=4M status=progress conv=fsync
+   xz -dc pi-studio-v1.4-orangepi-5b.img.xz | sudo dd of=/dev/sdX bs=4M status=progress conv=fsync
    ```
 4. Boot — you're in a tuned studio. First-boot tips land on the desktop.
 
