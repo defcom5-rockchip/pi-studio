@@ -34,6 +34,11 @@ at all, you are booting a foreign loader — go to **Method A** below.
 
 ---
 
+> **Already have a set-up system on microSD you'd rather keep?** Use
+> [docs/install-to-emmc.md](docs/install-to-emmc.md) instead — it clones your running system to eMMC
+> *and* installs the bootloader. This page is for a clean install from an image, or for cleaning up
+> an eMMC that has something else on it.
+
 ## Method A — the right way: write the full image to eMMC
 
 This rewrites everything: bootloader, kernel, and root filesystem. It is the supported install.

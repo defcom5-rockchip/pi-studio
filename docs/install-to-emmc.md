@@ -19,6 +19,11 @@ The eMMC is the `mmcblk` device that has **`boot0`/`boot1` sub-devices** (e.g. `
 `mmcblk0boot0`, `mmcblk0boot1`) — that's the tell. Your SD card is the other `mmcblk` (the
 one mounted as `/`). **Double-check: the target's contents will be erased.**
 
+> **Which guide do I want?** This page moves a **running, already-configured** system from SD to
+> eMMC (it installs the bootloader too). If you instead want a **clean install from a fresh image**,
+> or your eMMC came with **factory Android** on it, or the board misbehaves after an install, see
+> **[EMMC-INSTALL.md](../EMMC-INSTALL.md)**.
+
 ## 3 · Run the installer
 
 ```bash
