@@ -48,6 +48,11 @@ timing you'll definitely hear.
 ### Moving to eMMC
 Running from SD? [docs/install-to-emmc.md](docs/install-to-emmc.md) — one command clones your set-up system onto the onboard eMMC.
 
+### Adding storage, and where to plug in your interface
+**[EXTERNAL-STORAGE.md](EXTERNAL-STORAGE.md)** — put the audio interface on **USB 2.0** (class-compliant
+interfaces are USB 2.0 devices even in a 3.0 port) and keep **USB 3.0** free for the drive. Which SSD is
+worth buying, why the fastest one isn't, and why the enclosure matters more than the drive does.
+
 ## Download & flash
 The image ships in three parts (GitHub caps release files at 2 GB each).
 
