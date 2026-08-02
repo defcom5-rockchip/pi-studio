@@ -68,12 +68,22 @@ storage path on this hardware — another reason not to waste that port on a 480
 
 ## UASP matters more than the drive does
 
-**USB Attached SCSI Protocol** is the difference between ~400 MB/s and ~35 MB/s.
+**USB Attached SCSI Protocol** is a property of the *enclosure*, not the drive — and it decides how
+much of your SSD actually reaches the board.
 
-Older or cheaper enclosures use BOT (Bulk-Only Transport), which handles one command at a time and
-cannot queue. The drive inside can be excellent and you will still get hard-drive speeds out of it.
-Most decent enclosures made in the last several years support UASP, but it is worth confirming
-before buying — it will affect your experience far more than the choice between two SSDs.
+Every enclosure contains a USB-to-SATA bridge chip, and that chip speaks one of two protocols. **BOT**
+(Bulk-Only Transport) is the old one, built for USB flash drives: one command at a time, wait for
+completion, send the next. **UASP** queues multiple commands, supports NCQ, and lets the drive
+reorder work.
+
+Expect roughly **250–350 MB/s on BOT** against **400+ MB/s on UASP** for sequential transfers. The
+larger gap is in random I/O, queue depth and CPU overhead — which is what you feel when a DAW is
+streaming samples while something else writes in the background.
+
+**Confirming before you buy:** good enclosures advertise "UASP" outright. If the listing doesn't
+mention it, look for the bridge chipset — **ASMedia ASM1153/ASM1351**, **JMicron JMS578/JMS583** or
+**Realtek RTL9210** all support it. An enclosure that names no chipset and never says UASP is the
+one to skip.
 
 Verify on the board:
 
@@ -164,7 +174,11 @@ rm /mnt/ssd/testfile
 
 **Expected:** 350–420 MB/s read and write on a healthy SATA SSD over UASP.
 
-**If you see ~35 MB/s:** BOT instead of UASP — the enclosure, not the drive.
+**If you see 250–350 MB/s:** likely BOT instead of UASP. Check `lsusb -t` for `usb-storage` rather
+than `uas` — that's the enclosure, not the drive.
+
+**If you see ~35 MB/s:** you've dropped to USB 2.0 entirely. That's a cable, port or enclosure
+fault, not a protocol one.
 
 **If `lsusb -t` shows 480M:** it fell back to USB 2.0. Usually the cable or the enclosure. Try a
 different cable before blaming anything else.
